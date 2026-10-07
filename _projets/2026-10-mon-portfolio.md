@@ -24,10 +24,10 @@ Seul, en salle de formation. Un compte GitHub gratuit, le modèle de portfolio d
 
 ## Productions et preuves
 
-- L'adresse publique du site.
+- https://kilstarv.github.io/portfolio/
 - Le dépôt et son historique des modifications.
 - Le score d'accessibilité relevé.
 
 ## Ce que j'en retiens
 
-Remplacez cette phrase par une difficulté rencontrée et la façon dont vous l'avez réglée.
+J'ai appris à gérer un site via l'outil GitHub. L'interface à l'air complexe au 1er abord mais est enfaite logique et bien structurer. J'ai pu crée un début de portfolio sans encombre.
