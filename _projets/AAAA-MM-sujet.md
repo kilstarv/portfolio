@@ -1,5 +1,5 @@
 ---
-title: "Intitulé du projet"
+title: "Sauvegarde d'un portail"
 date: 2026-10-07
 cadre: "Atelier de professionnalisation"
 resume: "Une phrase : ce que vous avez fait, et pour qui."
