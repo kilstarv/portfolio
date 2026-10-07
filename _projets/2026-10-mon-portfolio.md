@@ -25,9 +25,9 @@ Seul, en salle de formation. Un compte GitHub gratuit, le modèle de portfolio d
 ## Productions et preuves
 
 - https://kilstarv.github.io/portfolio/
-- ![Contrôle html W3C]({{ "/images/Capture d'écran 2026-10-07 154213.png" | relative_url }})
-- ![Score d'accessibilité LightHouse]({{ "/images/Capture d'écran 2026-10-07 154347.png" | relative_url }})
-- ![Page d'accueil du site]({{ "/images/Capture d'écran 2026-10-07 152614.png" | relative_url }})
+![Contrôle html W3C]({{ "/images/Capture d'écran 2026-10-07 154213.png" | relative_url }})
+![Score d'accessibilité LightHouse]({{ "/images/Capture d'écran 2026-10-07 154347.png" | relative_url }})
+![Page d'accueil du site]({{ "/images/Capture d'écran 2026-10-07 152614.png" | relative_url }})
 
 
 ## Ce que j'en retiens
