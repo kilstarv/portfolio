@@ -1,0 +1,82 @@
+/* ==========================================================================
+   ANIMATIONS & TRANSITIONS - CHARTE HALLOWNEST
+   Transitions subtiles, immersives et respect strict de prefers-reduced-motion
+   ========================================================================== */
+
+/* Variables d'animation */
+:root {
+  --transition-rapide: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-douce: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-lente: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Apparition progressive fluide */
+@keyframes apparitionVoile {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Légère lueur d'âme (Soul Glow) pulsée très discrète */
+@keyframes lueurAme {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(121, 192, 255, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(121, 192, 255, 0.18);
+  }
+}
+
+/* Classes d'animation d'apparition */
+.anime-apparition {
+  animation: apparitionVoile var(--transition-lente) both;
+}
+
+/* Transitions pour les cartes et conteneurs interactifs */
+.carte,
+.comp,
+nav a,
+a.bouton,
+table tbody tr {
+  transition: background-color var(--transition-douce),
+              border-color var(--transition-douce),
+              box-shadow var(--transition-douce),
+              transform var(--transition-rapide);
+}
+
+/* Effet de survol sobre et élégant */
+.carte:hover {
+  transform: translateY(-2px);
+  border-color: var(--trait-lumineux);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(121, 192, 255, 0.12);
+}
+
+/* Liens avec transition de couleur fluide */
+a {
+  transition: color var(--transition-rapide), text-shadow var(--transition-rapide);
+}
+
+/* ==========================================================================
+   RESPECT STRICT DU CRITÈRE D'ACCESSIBILITÉ PREFERS-REDUCED-MOTION
+   Si l'utilisateur a activé la réduction de mouvement dans son système,
+   toutes les animations et transformations physiques sont neutralisées.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .carte:hover {
+    transform: none !important;
+  }
+}
