@@ -1,9 +1,10 @@
 ---
 title: "Mise en ligne de mon portfolio professionnel"
-date: 2026-10-07
+date: "2026-10-07"
 cadre: "Atelier de professionnalisation"
 resume: "Création et publication d'un site personnel gratuit, hébergé sur GitHub Pages, qui présente mes réalisations."
-competences: [c3, c6]
+competences: ["c3", "c6"]
+statut: "Terminé"
 ---
 
 ## Contexte
@@ -28,7 +29,6 @@ Seul, en salle de formation. Un compte GitHub gratuit, le modèle de portfolio d
 - ![Contrôle html W3C](../../images/Capture%20d%27%C3%A9cran%202026-10-07%20154213.png)
 - ![Score d'accessibilité LightHouse](../../images/Capture%20d%27%C3%A9cran%202026-10-07%20154347.png)
 - ![Page d'accueil du site](../../images/Capture%20d%27%C3%A9cran%202026-10-07%20152614.png)
-
 
 ## Ce que j'en retiens
 
