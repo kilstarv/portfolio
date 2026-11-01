@@ -50,6 +50,19 @@
   padding: 1rem 1.1rem 1.15rem;
 }
 
+.carte-contenu > .badges:first-child {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.liens-carte {
+  margin-top: 0.7rem;
+}
+
+.liens-carte a {
+  min-height: 40px;
+}
+
 .carte h4 a {
   color: var(--encre);
   text-decoration: none;

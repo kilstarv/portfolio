@@ -5,6 +5,8 @@ cadre: "Atelier de professionnalisation"
 resume: "Création et publication d'un site personnel gratuit, hébergé sur GitHub Pages, qui présente mes réalisations."
 competences: ["c3", "c6"]
 statut: "Terminé"
+image: "/images/Capture%20d%27%C3%A9cran%202026-10-07%20152614.png"
+image_alt: "Page d'accueil du site"
 ---
 
 ## Contexte
