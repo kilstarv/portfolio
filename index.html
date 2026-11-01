@@ -1,35 +1,69 @@
 ---
 layout: default
 ---
-<h1>{{ site.title }}</h1>
-<p class="sous-titre">{{ site.description }}</p>
+<section class="intro anime-apparition" aria-labelledby="titre-accueil">
+  <h1 id="titre-accueil">{{ site.title | escape }}</h1>
+  <p class="sous-titre">{{ site.description | escape }}</p>
+</section>
 
-<h2>Profil</h2>
-<p>Je possède déjà de bonnes bases en informatique, notamment en programmation, en utilisation des outils informatiques et dans la résolution de problèmes techniques. Je m’intéresse particulièrement aux systèmes, aux réseaux et à la cybersécurité, et j’aime apprendre par moi-même en réalisant des projets personnels. Je souhaite m’orienter vers un métier dans le domaine de l’informatique, notamment en tant que technicien systèmes et réseaux, avec la possibilité d’évoluer ensuite vers la cybersécurité. Je recherche surtout une formation et une expérience professionnelle qui me permettront de développer mes compétences, d’acquérir de l’expérience concrète et de progresser dans un domaine qui me passionne.
-</p>
+<section aria-labelledby="profil">
+  <h2 id="profil">Profil</h2>
+  <p>Je possède déjà de bonnes bases en informatique, notamment en programmation, en utilisation des outils informatiques et dans la résolution de problèmes techniques. Je m’intéresse particulièrement aux systèmes, aux réseaux et à la cybersécurité, et j’aime apprendre par moi-même en réalisant des projets personnels. Je souhaite m’orienter vers un métier dans le domaine de l’informatique, notamment en tant que technicien systèmes et réseaux, avec la possibilité d’évoluer ensuite vers la cybersécurité. Je recherche surtout une formation et une expérience professionnelle qui me permettront de développer mes compétences, d’acquérir de l’expérience concrète et de progresser dans un domaine qui me passionne.</p>
+</section>
 
 {% assign projets = site.projets | sort: "date" | reverse %}
-
-<h2 id="projets">Projets ({{ projets.size }})</h2>
-{% for p in projets %}
-<article class="carte">
-  <h3><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h3>
-  <p>{{ p.resume }}</p>
-  <p class="meta">{{ p.date | date: "%m/%Y" }} · {{ p.cadre }}</p>
-</article>
-{% endfor %}
-
-<h2 id="competences">Compétences du bloc 1</h2>
-<p>Chaque croix renvoie au projet qui la prouve. Le tableau se remplit tout seul à chaque projet ajouté.</p>
-<div class="defile">
-<table>
-  <thead>
-    <tr><th scope="col">Compétence</th>{% for p in projets %}<th scope="col"><a href="{{ p.url | relative_url }}">P{{ forloop.rindex }}</a></th>{% endfor %}</tr>
-  </thead>
-  <tbody>
-  {% for c in site.data.competences %}
-    <tr><th scope="row">{{ c.libelle }}</th>{% for p in projets %}<td class="case">{% if p.competences contains c.code %}<a href="{{ p.url | relative_url }}" aria-label="{{ c.libelle }} : {{ p.title }}">X</a>{% endif %}</td>{% endfor %}</tr>
+{% assign categories = projets | group_by_exp: "projet", "projet.categorie | default: 'Autres'" | sort: "name" %}
+<section aria-labelledby="projets">
+  <h2 id="projets">Projets ({{ projets.size }})</h2>
+  {% for categorie in categories %}
+  <section class="categorie-projets" aria-labelledby="categorie-{{ forloop.index }}">
+    <h3 id="categorie-{{ forloop.index }}">{{ categorie.name | escape }}</h3>
+    <div class="grille-projets">
+      {% for projet in categorie.items %}
+      <article class="carte">
+        {% if projet.image %}
+        <img class="carte-image" src="{{ projet.image | remove_first: '/' }}" alt="{{ projet.image_alt | default: projet.title | escape }}" loading="lazy" decoding="async">
+        {% endif %}
+        <div class="carte-contenu">
+          <h4><a href="{{ projet.url | append: 'index.html' | remove_first: '/' }}">{{ projet.title | escape }}</a></h4>
+          {% if projet.resume %}<p>{{ projet.resume | escape }}</p>{% endif %}
+          <p class="meta">{% if projet.date %}<time datetime="{{ projet.date | date: '%Y-%m-%d' }}">{{ projet.date | date: "%m/%Y" }}</time>{% endif %}{% if projet.date and projet.cadre %} · {% endif %}{% if projet.cadre %}{{ projet.cadre | escape }}{% endif %}</p>
+          {% if projet.technologies %}
+          <p class="badges" aria-label="Technologies">
+            {% for technologie in projet.technologies %}<span class="badge">{{ technologie | escape }}</span>{% endfor %}
+          </p>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
   {% endfor %}
-  </tbody>
-</table>
-</div>
+</section>
+
+<section aria-labelledby="competences">
+  <h2 id="competences">Compétences du bloc 1</h2>
+  <p>Chaque croix renvoie au projet qui la prouve. Le tableau se remplit tout seul à chaque projet ajouté.</p>
+  <div class="defile" role="region" aria-label="Tableau des compétences, défilement horizontal possible" tabindex="0">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Compétence</th>
+          {% for projet in projets %}
+          <th scope="col"><a href="{{ projet.url | append: 'index.html' | remove_first: '/' }}">P{{ forloop.rindex }}</a></th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for competence in site.data.competences %}
+        <tr>
+          <th scope="row">{{ competence.libelle | escape }}</th>
+          {% for projet in projets %}
+          <td class="case">{% if projet.competences contains competence.code %}<a href="{{ projet.url | append: 'index.html' | remove_first: '/' }}" aria-label="{{ competence.libelle | escape }} : {{ projet.title | escape }}">X</a>{% endif %}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
