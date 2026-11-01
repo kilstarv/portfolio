@@ -21,17 +21,44 @@ layout: default
     <div class="grille-projets">
       {% for projet in categorie.items %}
       <article class="carte">
-        {% if projet.image %}
-        <img class="carte-image" src="{{ projet.image | remove_first: '/' }}" alt="{{ projet.image_alt | default: projet.title | escape }}" loading="lazy" decoding="async">
+        {% assign image_carte = projet.image | default: projet.galerie.first %}
+        {% assign alt_carte = projet.image_alt | default: projet.galerie_alt.first | default: projet.title %}
+        {% if image_carte %}
+        <img class="carte-image" src="{{ image_carte | remove_first: '/' }}" alt="{{ alt_carte | escape }}" loading="lazy" decoding="async">
         {% endif %}
         <div class="carte-contenu">
+          {% if projet.categorie or projet.statut %}
+          <div class="badges" aria-label="Catégorie et statut du projet">
+            {% if projet.categorie %}<span class="badge">{{ projet.categorie | escape }}</span>{% endif %}
+            {% if projet.statut %}<span class="badge badge-statut">{{ projet.statut | escape }}</span>{% endif %}
+          </div>
+          {% endif %}
           <h4><a href="{{ projet.url | append: 'index.html' | remove_first: '/' }}">{{ projet.title | escape }}</a></h4>
           {% if projet.resume %}<p>{{ projet.resume | escape }}</p>{% endif %}
           <p class="meta">{% if projet.date %}<time datetime="{{ projet.date | date: '%Y-%m-%d' }}">{{ projet.date | date: "%m/%Y" }}</time>{% endif %}{% if projet.date and projet.cadre %} · {% endif %}{% if projet.cadre %}{{ projet.cadre | escape }}{% endif %}</p>
           {% if projet.technologies %}
-          <p class="badges" aria-label="Technologies">
+          <div class="badges" aria-label="Technologies utilisées">
             {% for technologie in projet.technologies %}<span class="badge">{{ technologie | escape }}</span>{% endfor %}
-          </p>
+          </div>
+          {% endif %}
+          {% if projet.galerie %}
+          <div class="badges" aria-label="Images complémentaires">
+            <span class="badge">Galerie · {{ projet.galerie.size }} image{% unless projet.galerie.size == 1 %}s{% endunless %}</span>
+          </div>
+          {% endif %}
+          {% if projet.competences %}
+          <div class="badges" aria-label="Compétences démontrées">
+            {% for code in projet.competences %}
+              {% assign competence = site.data.competences | where: "code", code | first %}
+              <span class="badge">{{ competence.libelle | default: code | escape }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if projet.github or projet.demo %}
+          <nav class="liens-projet liens-carte" aria-label="Liens du projet">
+            {% if projet.github %}<a href="{{ projet.github | escape }}" rel="noopener noreferrer">Code source</a>{% endif %}
+            {% if projet.demo %}<a href="{{ projet.demo | escape }}" rel="noopener noreferrer">Démo</a>{% endif %}
+          </nav>
           {% endif %}
         </div>
       </article>

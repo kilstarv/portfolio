@@ -3,21 +3,41 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   min-width: 320px;
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% 0, rgba(53, 89, 125, 0.12), transparent 42rem),
+    radial-gradient(ellipse at 50% 0, rgba(139, 165, 194, 0.1), transparent 46rem),
+    radial-gradient(ellipse at 50% 42%, transparent 42%, rgba(0, 0, 0, 0.3) 100%),
     var(--fond);
   color: var(--encre);
   font-family: var(--police-texte);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 1.125rem;
+  line-height: 1.72;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(166, 192, 220, 0.035), transparent 58%),
+    radial-gradient(ellipse at center, transparent 38%, rgba(0, 0, 0, 0.28) 100%);
+  content: "";
+  pointer-events: none;
 }
 
 header,
@@ -26,14 +46,22 @@ footer {
   margin-inline: auto;
 }
 
+header,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
 header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 0.5rem 2rem;
-  padding-block: 1.5rem;
-  border-bottom: 1px solid var(--trait-subtil);
+  padding-block: 1.25rem 1rem;
+  border-bottom: 1px solid transparent;
+  background: linear-gradient(90deg, transparent, var(--trait) 18%, var(--trait) 82%, transparent) bottom / 100% 1px no-repeat;
 }
 
 main {
@@ -44,6 +72,10 @@ main {
 
 main.page-accueil {
   width: min(100% - 2rem, 64rem);
+}
+
+main > section {
+  margin-block: 2rem;
 }
 
 .lien-evitement {
@@ -65,20 +97,28 @@ main.page-accueil {
 .site {
   margin: 0;
   font-family: var(--police-titre);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .site a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--encre);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--trait);
+  text-underline-offset: 0.3em;
+  text-shadow: 0 0 18px rgba(189, 207, 227, 0.16);
 }
 
 nav ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1.25rem;
+  justify-content: center;
+  gap: 0.35rem 1.1rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -88,12 +128,74 @@ nav ul {
 th {
   background: var(--surface-active);
   color: var(--encre);
+  font-family: var(--police-titre);
+  font-size: 0.86rem;
+  letter-spacing: 0.035em;
 }
 
-nav a {
+header nav a {
+  position: relative;
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  padding-inline: 0.8rem;
+  color: var(--encre);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-decoration: underline;
+  text-decoration-color: var(--trait);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  text-transform: uppercase;
+}
+
+header nav a::before,
+header nav a::after {
+  position: absolute;
+  top: 50%;
+  width: 0.35rem;
+  height: 0.35rem;
+  border: 1px solid var(--trait-lumineux);
+  content: "";
+  opacity: 0.4;
+  transform: translateY(-50%) rotate(45deg) scale(0.75);
+}
+
+header nav a::before {
+  left: 0;
+}
+
+header nav a::after {
+  right: 0;
+}
+
+header nav a:hover,
+header nav a:focus-visible {
+  color: var(--accent-survol);
+  text-decoration-color: currentColor;
+}
+
+header nav a:hover::before,
+header nav a:hover::after,
+header nav a:focus-visible::before,
+header nav a:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) rotate(45deg) scale(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  header nav a {
+    transition:
+      color var(--transition-rapide),
+      text-decoration-color var(--transition-rapide);
+  }
+
+  header nav a::before,
+  header nav a::after {
+    transition:
+      opacity var(--transition-rapide),
+      transform var(--transition-rapide);
+  }
 }
 
 h1,
@@ -106,30 +208,69 @@ h4 {
 }
 
 h1 {
-  margin: 1.5rem 0 0;
-  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 1.5rem 0 0.8rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.09em;
+  text-align: center;
+  text-shadow: 0 0 22px rgba(189, 207, 227, 0.12);
+  text-transform: uppercase;
 }
 
 h2 {
-  margin: 2.5rem 0 1rem;
-  padding-bottom: 0.45rem;
-  border-bottom: 1px solid var(--trait);
-  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  position: relative;
+  margin: 2.75rem 0 1.3rem;
+  padding-bottom: 0.95rem;
+  font-size: clamp(1.15rem, 3vw, 1.55rem);
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h2[id] {
+  scroll-margin-top: 1rem;
+}
+
+h2::before {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  border: 1px solid var(--trait-lumineux);
+  background: var(--fond);
+  content: "";
+  transform: translate(-50%, 50%) rotate(45deg);
+}
+
+h2::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--trait) 20%, var(--trait-lumineux) 50%, var(--trait) 80%, transparent);
+  content: "";
 }
 
 h3 {
   margin-block: 0.25rem 0.5rem;
   font-size: 1.15rem;
+  letter-spacing: 0.07em;
 }
 
 p {
   max-width: 72ch;
 }
 
+main > section[aria-labelledby="profil"] > p {
+  margin-inline: auto;
+  text-align: center;
+}
+
 a {
   color: var(--accent-survol);
   text-underline-offset: 0.2em;
-  text-decoration-thickness: 0.08em;
+  text-decoration-thickness: 0.06em;
 }
 
 a:hover {
@@ -145,6 +286,11 @@ textarea:focus-visible,
 [tabindex="0"]:focus-visible {
   outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(189, 207, 227, 0.26);
+  color: var(--encre);
 }
 
 button,
@@ -184,8 +330,13 @@ figcaption,
   margin: 0.35rem 0 0;
 }
 
+.intro .sous-titre {
+  margin-inline: auto;
+  text-align: center;
+}
+
 .meta {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .defile {
@@ -198,7 +349,17 @@ figcaption,
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  background: rgba(17, 25, 37, 0.76);
+  font-size: 1rem;
+}
+
+tbody tr {
+  transition: background-color var(--transition-rapide);
+}
+
+tbody tr:hover,
+tbody tr:focus-within {
+  background-color: rgba(189, 207, 227, 0.045);
 }
 
 th,
@@ -213,6 +374,26 @@ td.case {
   min-width: 2.75rem;
   text-align: center;
   font-weight: 700;
+}
+
+td.case a {
+  display: inline-grid;
+  min-width: 1.7rem;
+  min-height: 1.7rem;
+  place-items: center;
+  border: 1px solid var(--trait-lumineux);
+  border-radius: 50%;
+  background: var(--accent-fond);
+  color: var(--encre);
+  font-family: var(--police-titre);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+td.case a:hover,
+td.case a:focus-visible {
+  background: var(--surface-active);
+  text-decoration: underline;
 }
 
 code,
@@ -241,9 +422,11 @@ pre {
 footer {
   margin-top: 2rem;
   padding-block: 1.25rem 2rem;
-  border-top: 1px solid var(--trait-subtil);
+  border-top: 1px solid transparent;
+  background: linear-gradient(90deg, transparent, var(--trait) 18%, var(--trait) 82%, transparent) top / 100% 1px no-repeat;
   color: var(--doux);
-  font-size: 0.9rem;
+  font-size: 1rem;
+  text-align: center;
 }
 
 footer p {
@@ -252,25 +435,42 @@ footer p {
 
 @media (max-width: 520px) {
   body {
-    font-size: 1rem;
+    font-size: 1.0625rem;
   }
 
   header {
-    align-items: flex-start;
+    align-items: center;
   }
 
   nav ul {
-    gap: 0.1rem 0.75rem;
+    gap: 0.1rem 0.35rem;
+  }
+
+  header nav a {
+    padding-inline: 0.65rem;
+    font-size: 0.7rem;
   }
 
   h1 {
     margin-top: 1rem;
+    letter-spacing: 0.055em;
   }
+
+  h2 { letter-spacing: 0.06em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  tbody tr {
+    transition: none;
+  }
+
+  tbody tr:hover,
+  tbody tr:focus-within {
+    background-color: transparent;
   }
 
   .carte:hover,

@@ -8,7 +8,7 @@ layout: default
     {%- assign relative_root = relative_root | append: '../' -%}
   {%- endfor -%}
 {%- endif -%}
-<article>
+<article class="fiche-projet">
   <h1>{{ page.title | escape }}</h1>
   {% if page.date or page.cadre %}
   <p class="sous-titre">
@@ -42,7 +42,9 @@ layout: default
   </figure>
   {% endif %}
 
-  {{ content }}
+  <div class="contenu-projet">
+    {{ content }}
+  </div>
 
   {% if page.galerie %}
   <div class="galerie-projet" aria-label="Galerie du projet">
