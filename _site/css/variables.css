@@ -1,28 +1,57 @@
+@font-face {
+  font-family: "Cinzel";
+  src: url("../Cinzel/Cinzel-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../EB_Garamond/EBGaramond-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../EB_Garamond/EBGaramond-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
-  --fond: #0b0f17;
-  --surface: #131b26;
-  --surface-survol: #1a2433;
-  --surface-active: #202d40;
-  --trait: #36475d;
-  --trait-subtil: #1f2b3b;
-  --trait-lumineux: #79c0ff;
-  --encre: #f0f6fc;
-  --doux: #a5b4c4;
-  --primary-color: #79c0ff;
-  --secondary-color: #202d40;
-  --text-color: #f0f6fc;
-  --accent: #79c0ff;
-  --accent-survol: #a5d6ff;
-  --accent-fond: rgba(121, 192, 255, 0.1);
-  --focus-ring: #79c0ff;
-  --police-titre: "Palatino Linotype", Palatino, Georgia, serif;
-  --police-texte: "Plus Jakarta Sans", Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fond: #080c14;
+  --surface: #111925;
+  --surface-survol: #182333;
+  --surface-active: #202c3c;
+  --trait: #425166;
+  --trait-subtil: #273344;
+  --trait-lumineux: #bdcfe3;
+  --encre: #edf2f8;
+  --doux: #b7c2d0;
+  --primary-color: #bdcfe3;
+  --secondary-color: #202c3c;
+  --text-color: #edf2f8;
+  --accent: #bdcfe3;
+  --accent-survol: #dce8f5;
+  --accent-fond: rgba(189, 207, 227, 0.08);
+  --focus-ring: #dce8f5;
+  --police-titre: "Cinzel", "Palatino Linotype", Palatino, Georgia, serif;
+  --police-texte: "EB Garamond", "Cormorant Garamond", "Palatino Linotype", Palatino, Georgia, serif;
   --police-code: "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
-  --rayon-sm: 4px;
-  --rayon-md: 8px;
-  --rayon-lg: 12px;
-  --transition-rapide: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-douce: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-lente: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --rayon-sm: 2px;
+  --rayon-md: 5px;
+  --rayon-lg: 8px;
+  --duree-micro: 180ms;
+  --duree-element: 300ms;
+  --duree-apparition: 520ms;
+  --courbe-interaction: cubic-bezier(0.22, 1, 0.36, 1);
+  --courbe-apparition: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-rapide: var(--duree-micro) var(--courbe-interaction);
+  --transition-douce: var(--duree-element) var(--courbe-interaction);
+  --transition-lente: var(--duree-apparition) var(--courbe-apparition);
 }
