@@ -4,6 +4,16 @@ date: 2026-10-07
 cadre: "Atelier de professionnalisation"
 resume: "Une phrase : ce que vous avez fait, et pour qui."
 competences: [c2]
+# Les métadonnées ci-dessous sont facultatives :
+# categorie: "..."
+# statut: "En cours"
+# technologies: ["...", "..."]
+# image: "/images/projets/nom-du-projet/image.png"
+# image_alt: "Description concise de l'image"
+# galerie: ["/images/projets/nom-du-projet/autre-image.png"]
+# galerie_alt: ["Description concise de l'image"]
+# github: "https://github.com/..."
+# demo: "https://..."
 ---
 
 ## Contexte
@@ -21,7 +31,7 @@ Le matériel, les logiciels, seul ou en équipe.
 
 ## Productions et preuves
 
-![Ce que montre la capture]({{ "/images/exemple.png" | relative_url }})
+![Ce que montre la capture](../../images/exemple.png)
 
 ## Ce que j'en retiens
 

@@ -1,15 +1,69 @@
 ---
 layout: default
 ---
+{%- assign path_depth = page.url | split: '/' | size | minus: 1 -%}
+{%- assign relative_root = '' -%}
+{%- if path_depth > 0 -%}
+  {%- for level in (1..path_depth) -%}
+    {%- assign relative_root = relative_root | append: '../' -%}
+  {%- endfor -%}
+{%- endif -%}
 <article>
-  <h1>{{ page.title }}</h1>
-  <p class="sous-titre">{{ page.date | date: "%m/%Y" }} · {{ page.cadre }}</p>
-
-  <p class="comp-liste">Compétences :
-  {% for c in page.competences %}{% assign comp = site.data.competences | where: "code", c | first %}<span class="comp">{{ comp.libelle }}</span>{% endfor %}
+  <h1>{{ page.title | escape }}</h1>
+  {% if page.date or page.cadre %}
+  <p class="sous-titre">
+    {% if page.date %}<time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%m/%Y" }}</time>{% endif %}
+    {% if page.date and page.cadre %} · {% endif %}
+    {% if page.cadre %}{{ page.cadre | escape }}{% endif %}
   </p>
+  {% endif %}
+
+  {% if page.categorie or page.statut or page.technologies %}
+  <div class="badges" aria-label="Informations sur le projet">
+    {% if page.categorie %}<span class="badge">{{ page.categorie | escape }}</span>{% endif %}
+    {% if page.statut %}<span class="badge badge-statut">{{ page.statut | escape }}</span>{% endif %}
+    {% for technologie in page.technologies %}<span class="badge">{{ technologie | escape }}</span>{% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.competences %}
+  <p class="comp-liste">Compétences :
+    {% for c in page.competences %}
+      {% assign comp = site.data.competences | where: "code", c | first %}
+      <span class="comp">{{ comp.libelle | default: c | escape }}</span>
+    {% endfor %}
+  </p>
+  {% endif %}
+
+  {% if page.resume %}<p class="resume-projet">{{ page.resume | escape }}</p>{% endif %}
+  {% if page.image %}
+  <figure>
+    <img class="image-principale" src="{{ relative_root }}{{ page.image | remove_first: '/' }}" alt="{{ page.image_alt | default: page.title | escape }}" decoding="async">
+  </figure>
+  {% endif %}
 
   {{ content }}
 
-  <p><a href="{{ '/' | relative_url }}#projets">Retour aux projets</a></p>
+  {% if page.galerie %}
+  <div class="galerie-projet" aria-label="Galerie du projet">
+    {% for image in page.galerie %}
+      {% assign image_url = relative_root | append: image | remove_first: '/' %}
+      {% unless content contains image_url %}
+      {% assign image_alt = page.galerie_alt[forloop.index0] | default: page.title %}
+      <figure>
+        <img src="{{ image_url }}" alt="{{ image_alt | escape }}" loading="lazy" decoding="async">
+      </figure>
+      {% endunless %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.github or page.demo %}
+  <nav class="liens-projet" aria-label="Liens du projet">
+    {% if page.github %}<a href="{{ page.github | escape }}" rel="noopener noreferrer">Code source sur GitHub</a>{% endif %}
+    {% if page.demo %}<a href="{{ page.demo | escape }}" rel="noopener noreferrer">Démonstration en ligne</a>{% endif %}
+  </nav>
+  {% endif %}
+
+  <p><a href="{{ relative_root }}index.html#projets">Retour aux projets</a></p>
 </article>

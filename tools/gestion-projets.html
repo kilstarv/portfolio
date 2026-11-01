@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Atelier des projets · Portfolio</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/utils.css">
+  <style>
+    body { min-height: 100vh; }
+    main { width: min(100% - 2rem, 64rem); }
+    .outil-intro { margin-bottom: 2rem; }
+    .panneau { margin-block: 1rem; padding: 1.25rem; border: 1px solid var(--trait); border-radius: var(--rayon-md); background: var(--surface); }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-block: 1rem; }
+    .barre-outil { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+    .formulaire { display: grid; gap: 1.1rem; }
+    .champ { display: grid; gap: 0.35rem; }
+    .champ small, .aide { color: var(--doux); }
+    input, select, textarea { width: 100%; padding: 0.65rem 0.75rem; border: 1px solid var(--trait); border-radius: var(--rayon-sm); background: var(--fond); color: var(--encre); }
+    textarea { min-height: 7rem; resize: vertical; }
+    fieldset { min-width: 0; padding: 0.8rem; border: 1px solid var(--trait); border-radius: var(--rayon-sm); }
+    legend { padding-inline: 0.35rem; font-weight: 700; }
+    .liste-projets { display: grid; gap: 0.65rem; padding: 0; list-style: none; }
+    .projet-outil { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.7rem; padding: 0.85rem; border: 1px solid var(--trait); border-radius: var(--rayon-sm); background: var(--fond); }
+    .projet-outil p { margin: 0; }
+    .competences { display: grid; gap: 0.45rem; }
+    .competences label, .choix-couverture { display: flex; align-items: center; gap: 0.55rem; }
+    .competences input, .choix-couverture input { width: auto; min-width: 1.1rem; min-height: 1.1rem; }
+    .liste-images { display: grid; gap: 0.75rem; }
+    .image-outil { display: grid; gap: 0.5rem; padding: 0.75rem; border: 1px solid var(--trait-subtil); border-radius: var(--rayon-sm); }
+    .message { min-height: 1.5em; padding: 0.4rem 0; }
+    .message[data-type="erreur"] { color: #ffb4b4; }
+    .message[data-type="succes"] { color: #9ee7bb; }
+    .apercu-projet { display: grid; gap: 0.35rem; }
+    .apercu-projet p { margin: 0; }
+    .masque { display: none !important; }
+    @media (min-width: 760px) {
+      .colonnes-outil { display: grid; grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.4fr); gap: 1rem; align-items: start; }
+      .panneau { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="site">Atelier des projets</p>
+  </header>
+  <main>
+    <section class="outil-intro" aria-labelledby="titre-outil">
+      <h1 id="titre-outil">Gérer mes projets</h1>
+      <p class="sous-titre">Préparez vos fiches et leurs images dans votre copie locale du portfolio. Rien n’est envoyé ni publié automatiquement.</p>
+    </section>
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+
+    <section id="incompatible" class="panneau masque" role="alert">
+      <h2>Un navigateur compatible est nécessaire</h2>
+      <p>L’accès au dossier local nécessite l’API File System Access, disponible dans les versions récentes de Chrome et Edge. Ouvrez cet outil dans l’un de ces navigateurs, puis choisissez le dossier racine du dépôt.</p>
+      <p>Si l’outil est ouvert directement depuis un fichier et que le navigateur bloque l’accès, servez localement le dépôt avec un serveur HTTP local, puis ouvrez cette page sur votre ordinateur. Aucun service distant n’est nécessaire.</p>
+    </section>
+
+    <section id="connexion" class="panneau" aria-labelledby="titre-connexion">
+      <h2 id="titre-connexion">1. Choisir le dossier du portfolio</h2>
+      <p>Sélectionnez le dossier qui contient <code>_projets</code>, <code>_data</code> et <code>index.html</code>. L’outil demandera l’autorisation d’y lire et d’y écrire.</p>
+      <button id="choisir-dossier" class="bouton-primaire" type="button">Choisir le dossier racine</button>
+    </section>
+
+    <section id="atelier" class="masque" aria-labelledby="titre-atelier">
+      <div class="barre-outil">
+        <h2 id="titre-atelier">2. Atelier local</h2>
+        <button id="changer-dossier" class="bouton-secondaire" type="button">Changer de dossier</button>
+      </div>
+      <p id="nom-dossier" class="aide"></p>
+
+      <div class="colonnes-outil">
+        <section class="panneau" aria-labelledby="titre-liste">
+          <div class="barre-outil">
+            <h3 id="titre-liste">Mes projets</h3>
+            <button id="nouveau-projet" class="bouton-primaire" type="button">Nouveau projet</button>
+          </div>
+          <ul id="liste-projets" class="liste-projets"></ul>
+          <p id="aucun-projet" class="aide masque">Aucun projet publié dans le dossier sélectionné.</p>
+        </section>
+
+        <section id="vue-formulaire" class="panneau masque" aria-labelledby="titre-formulaire">
+          <h3 id="titre-formulaire">Nouveau projet</h3>
+          <form id="formulaire-projet" class="formulaire">
+            <div class="champ">
+              <label for="titre-projet">Titre <span aria-hidden="true">*</span></label>
+              <input id="titre-projet" name="title" required maxlength="160" autocomplete="off">
+            </div>
+            <div class="champ">
+              <label for="date-projet">Date <span aria-hidden="true">*</span></label>
+              <input id="date-projet" name="date" type="date" required>
+            </div>
+            <div class="champ">
+              <label for="resume-projet">Résumé <span aria-hidden="true">*</span></label>
+              <textarea id="resume-projet" name="resume" required maxlength="400"></textarea>
+              <small>Une phrase courte pour présenter le projet sur l’accueil.</small>
+            </div>
+            <div class="champ">
+              <label for="cadre-projet">Cadre</label>
+              <input id="cadre-projet" name="cadre" maxlength="160">
+            </div>
+            <div class="champ">
+              <label for="categorie-projet">Catégorie</label>
+              <input id="categorie-projet" name="categorie" maxlength="80" placeholder="Ex. Réseau, développement…">
+            </div>
+            <div class="champ">
+              <label for="statut-projet">Statut</label>
+              <select id="statut-projet" name="statut">
+                <option value="">Aucun statut</option>
+                <option value="En cours">En cours</option>
+                <option value="Terminé">Terminé</option>
+                <option value="En pause">En pause</option>
+                <option value="Archivé">Archivé</option>
+              </select>
+            </div>
+            <div class="champ">
+              <label for="technologies-projet">Technologies</label>
+              <input id="technologies-projet" name="technologies" placeholder="Séparez les technologies par des virgules">
+            </div>
+            <div class="champ">
+              <label for="github-projet">Lien GitHub</label>
+              <input id="github-projet" name="github" type="url" inputmode="url" placeholder="https://github.com/…">
+            </div>
+            <div class="champ">
+              <label for="demo-projet">Démonstration en ligne</label>
+              <input id="demo-projet" name="demo" type="url" inputmode="url" placeholder="https://…">
+            </div>
+            <fieldset>
+              <legend>Compétences démontrées</legend>
+              <p class="aide">Choisissez les compétences dans la liste; leurs codes sont gérés automatiquement.</p>
+              <div id="liste-competences" class="competences"></div>
+            </fieldset>
+            <div class="champ">
+              <label for="images-projet">Images du projet</label>
+              <input id="images-projet" name="images" type="file" accept="image/*" multiple>
+              <small>Les copies seront rangées dans <code>images/projets/nom-du-projet/</code>. Le texte alternatif est à renseigner pour chaque image.</small>
+              <label class="choix-couverture"><input id="optimiser-images" type="checkbox" checked> Redimensionner les grandes images (1920 px maximum) et compresser les photos JPEG/WebP</label>
+              <small>Les PNG restent sans perte; les SVG et GIF animés sont copiés tels quels.</small>
+              <div id="liste-images" class="liste-images"></div>
+            </div>
+            <fieldset>
+              <legend>Récit du projet</legend>
+              <div class="formulaire">
+                <div class="champ"><label for="section-contexte">Contexte</label><textarea id="section-contexte"></textarea></div>
+                <div class="champ"><label for="section-moyens">Conditions et moyens</label><textarea id="section-moyens"></textarea></div>
+                <div class="champ"><label for="section-description">Description de l’activité</label><textarea id="section-description"></textarea></div>
+                <div class="champ"><label for="section-productions">Productions et preuves</label><textarea id="section-productions"></textarea></div>
+                <div class="champ"><label for="section-recul">Ce que j’en retiens</label><textarea id="section-recul"></textarea></div>
+              </div>
+            </fieldset>
+            <div class="actions">
+              <button class="bouton-primaire" type="submit">Prévisualiser</button>
+              <button id="annuler-edition" class="bouton-secondaire" type="button">Annuler</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="vue-apercu" class="panneau masque" aria-labelledby="titre-apercu">
+          <h3 id="titre-apercu">Aperçu avant enregistrement</h3>
+          <div id="resume-apercu" class="apercu-projet"></div>
+          <h4>Markdown qui sera enregistré</h4>
+          <pre><code id="markdown-apercu"></code></pre>
+          <div class="actions">
+            <button id="modifier-apercu" class="bouton-secondaire" type="button">Revenir au formulaire</button>
+            <button id="enregistrer-projet" class="bouton-primaire" type="button">Enregistrer sur mon disque</button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="gestion-projets.js" defer></script>
+</body>
+</html>

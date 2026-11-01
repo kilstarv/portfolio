@@ -1,0 +1,25 @@
+/* Mouvement décoratif limité aux navigateurs ne demandant pas de réduction. */
+@keyframes apparitionVoile {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anime-apparition {
+    animation: apparitionVoile var(--transition-lente) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte:hover,
+  .carte:focus-within {
+    transform: none;
+    transition: none;
+  }
+}
